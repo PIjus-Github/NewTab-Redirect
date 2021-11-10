@@ -1,0 +1,45 @@
+var now = new Date(),
+    hours = now.getHours(),
+    minutes = now.getMinutes() + hours * 60,
+    link = document.createElement('link'),
+    href;
+
+var TIME_INTERVALS = { // in minutes
+    AM_START: 6 * 60,
+    AM_END_PM_START: 14 * 60,
+    PM_END: 22 * 60
+}
+
+var CSS_FILES = {
+    AM_START: 'common-light.css',
+    AM_END_PM_START: 'common.css',
+    PM_END: 'common.css'
+}
+
+link.rel = 'stylesheet';
+link.type = 'text/css';
+
+if (minutes > TIME_INTERVALS.AM_START) {
+
+    if (minutes > TIME_INTERVALS.AM_END_PM_START) {
+
+        if (minutes > TIME_INTERVALS.PM_END) {
+            // > PM_START hours now 
+            href = CSS_FILES.PM_END;
+        } else {
+            // > AM_END_PM_START && < PM_END time
+            href = CSS_FILES.AM_END_PM_START;
+        }
+
+    } else {
+        // AM_START - AM_END
+        href = CSS_FILES.AM_START;
+    }
+} else {
+    // 00.00 - AM_START
+    href = CSS_FILES.PM_END;
+}
+
+link.href = '../css/' + href;
+
+document.getElementsByTagName('head')[0].appendChild(link);
